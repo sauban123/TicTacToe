@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/relative"
-    android:background="@drawable/img"
+    android:background="@drawable/flower"
     tools:context=".MainActivity">
     <TextView
         android:layout_width="240dp"
@@ -21,79 +21,73 @@
 
     <TextView
         android:id="@+id/playerone"
-        android:layout_width="160dp"
+        android:layout_width="100dp"
         android:layout_height="35dp"
         android:layout_below="@id/text1"
-        android:textStyle="italic"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:text="Player 1 score"
+        android:text="Player 1"
+        android:layout_marginLeft="30dp"
         android:textColor="@color/black"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/playertwoscore"
-        android:layout_width="160dp"
+        android:id="@+id/playertwo"
+        android:layout_width="100dp"
         android:layout_height="35dp"
         android:layout_below="@id/text1"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
         android:textStyle="italic"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="Player 2 score"
+        android:text="Player 2"
         android:textColor="@color/black"
         android:textSize="25dp" />
     <TextView
-        android:layout_width="40dp"
+        android:layout_width="100dp"
         android:layout_height="42dp"
         android:text="0"
-        android:id="@+id/playerOneScore"
+        android:id="@+id/text_view_p1"
         android:layout_below="@id/playerone"
-        android:layout_marginLeft="82dp"
+        android:layout_marginLeft="42dp"
         android:textColor="@color/black"
         android:layout_marginTop="5dp"
-        android:textSize="30dp"/>
+        android:textSize="20dp"/>
     <TextView
-        android:layout_width="40dp"
+        android:layout_width="100dp"
         android:layout_height="42dp"
         android:text="0"
-        android:id="@+id/playertwo"
+        android:id="@+id/text_view_p2"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="82dp"
+        android:layout_marginRight="42dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/playerone"
         android:textColor="@color/black"
-        android:textSize="30dp"/>
+        android:textSize="20dp"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="255dp"
         android:layout_height="85dp"
-        android:layout_below="@id/playerOneScore"
+        android:layout_below="@id/text_view_p1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/button_00"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="5dp"
             app:cornerRadius="20dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button_01"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="5dp"
             app:cornerRadius="20dp" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/button_02"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="5dp"
@@ -109,21 +103,21 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/button_10"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="5dp"
             app:cornerRadius="20dp" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/button_11"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="5dp"
             app:cornerRadius="20dp" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/button_12"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="5dp"
@@ -142,25 +136,25 @@
             android:layout_height="75dp"
             app:cornerRadius="20dp"
             android:layout_margin="5dp"
-            android:id="@+id/button7"/>
+            android:id="@+id/button_20"/>
         <Button
             android:layout_width="75dp"
             android:layout_height="75dp"
             app:cornerRadius="20dp"
             android:layout_margin="5dp"
-            android:id="@+id/button8"/>
+            android:id="@+id/button_21"/>
         <Button
             android:layout_width="75dp"
             android:layout_height="75dp"
             app:cornerRadius="20dp"
             android:layout_margin="5dp"
-            android:id="@+id/button9"/>
+            android:id="@+id/button_22"/>
     </LinearLayout>
     <Button
         android:layout_width="220dp"
         android:layout_height="65dp"
-        android:id="@+id/playagain"
-        android:text="Play Again"
+        android:id="@+id/button_reset"
+        android:text="Restart"
         android:textColor="#050F46"
         android:backgroundTint="#EBD728"
         android:textStyle="italic"
@@ -168,18 +162,18 @@
         android:layout_below="@id/status"
         android:layout_marginTop="20dp"
         android:textSize="30dp"/>
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/reset"
-        android:text="Restart"
-        android:textStyle="italic"
-        android:backgroundTint="#D82D2D"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/playagain"
-        android:textSize="30dp"
-        android:textColor="#FFFFFF"/>
+    <!--    <Button-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        -->
+    <!--        android:text="Restart"-->
+    <!--        android:textStyle="italic"-->
+    <!--        android:backgroundTint="#D82D2D"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="15dp"-->
+    <!--        android:layout_below="@+id/playagain"-->
+    <!--        android:textSize="30dp"-->
+    <!--        android:textColor="#FFFFFF"/>-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -4,129 +4,154 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    boolean  playerOneActive;
-    private TextView playerOneScore,playerTwoScore,playerStatus;
-    private final Button[] buttons =new Button[9];
-    private Button reset,playagain;
-    private  int playerOneScoreCount, playerTwoScoreCount;
-    int[] gameState= {2,2,2,2,2,2,2,2,2};
-    int[][] winningPositions= {{0,1,2} , {3,4,5} , {6,7,8} , {0,3,6}, {1,4,7}, {2,5,8},{0,4,8},{2,4,6} };
-    int rounds;
-    private Object view;
+    private Button[][] buttons = new Button[3][3];
+    private boolean player1Turn = true;
+    private int roundCount;
+    private int player1Points;
+    private int player2Points;
+    private TextView textViewPlayer1;
+    private TextView textViewPlayer2;
 
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        playerOneScore = findViewById(R.id.playerone);
-        playerTwoScore = findViewById(R.id.playertwo);
-        playerStatus = findViewById(R.id.status);
-        reset= findViewById(R.id.reset);
-        playagain = findViewById(R.id.playagain);
-        buttons[0] = findViewById(R.id.button1);
-        buttons[1] = findViewById(R.id.button2);
-        buttons[2] = findViewById(R.id.button3);
-        buttons[3] = findViewById(R.id.button4);
-        buttons[4] = findViewById(R.id.button5);
-        buttons[5] = findViewById(R.id.button6);
-        buttons[6] = findViewById(R.id.button7);
-        buttons[7] = findViewById(R.id.button8);
-        buttons[8] = findViewById(R.id.button9);
-
-        for (Button button : buttons) {
-            button.setOnClickListener(this);
+        textViewPlayer1 = findViewById(R.id.text_view_p1);
+        textViewPlayer2 = findViewById(R.id.text_view_p2);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                String buttonID = "button_" + i + j;
+                int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
+                buttons[i][j] = findViewById(resID);
+                buttons[i][j].setOnClickListener(this);
+            }
         }
-        playerOneScoreCount = 0;
-        playerTwoScoreCount = 0;
-        playerOneActive = true;
-        rounds= 0;
+        Button buttonReset = findViewById(R.id.button_reset);
+        buttonReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetGame();
+            }
+        });
+    }
+    @Override
+
+    public void onClick(View v) {
+        if (!((Button) v).getText().toString().equals("")) {
+            return;
+        }
+        if (player1Turn) {
+            ((Button) v).setText("0");
+        } else {
+            ((Button) v).setText("X");
+        }
+        roundCount++;
+        if (checkForWin()) {
+            if (player1Turn) {
+                player1Wins();
+            } else {
+                player2Wins();
+            }
+        } else if (roundCount == 9) {
+            draw();
+        } else {
+            player1Turn = !player1Turn;
+        }
+    }
+    private boolean checkForWin() {
+        String[][] field = new String[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                field[i][j] = buttons[i][j].getText().toString();
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            if (field[i][0].equals(field[i][1])
+                    && field[i][0].equals(field[i][2])
+                    && !field[i][0].equals("")) {
+                return true;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            if (field[0][i].equals(field[1][i])
+                    && field[0][i].equals(field[2][i])
+                    && !field[0][i].equals("")) {
+                return true;
+            }
+        }
+        if (field[0][0].equals(field[1][1])
+                && field[0][0].equals(field[2][2])
+                && !field[0][0].equals("")) {
+            return true;
+        }
+        if (field[0][2].equals(field[1][1])
+                && field[0][2].equals(field[2][0])
+                && !field[0][2].equals("")) {
+            return true;
+        }
+        return false;
+    }
+    private void player1Wins() {
+        player1Points++;
+        Toast.makeText(this, "hurray!! Player 1 wins !", Toast.LENGTH_SHORT).show();
+        updatePointsText();
+        resetBoard();
+    }
+    private void player2Wins() {
+        player2Points++;
+        Toast.makeText(this, "hurray!! Player 2 wins !", Toast.LENGTH_SHORT).show();
+        updatePointsText();
+        resetBoard();
+    }
+    private void draw() {
+        Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
+        resetBoard();
+    }
+
+    private void updatePointsText() {
+        textViewPlayer1.setText("Score " + player1Points);
+        textViewPlayer2.setText("Score " + player2Points);
+    }
+
+    private void resetBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j].setText("");
+            }
+        }
+        roundCount = 0;
+        player1Turn = true;
+    }
+
+    private void resetGame() {
+        player1Points = 0;
+        player2Points = 0;
+        updatePointsText();
+        resetBoard();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("roundCount", roundCount);
+        outState.putInt("player1Points", player1Points);
+        outState.putInt("player2Points", player2Points);
+        outState.putBoolean("player1Turn", player1Turn);
 
     }
 
     @Override
-    public void onClick(View v) {
-        if(!((Button)view).getText().toString().equals("")){
-            return;
-        }
-        else if(checkWinner()){
-            return;
-        }
-        String buttonID = ((Button) view).getResources().getResourceEntryName(((Button) view).getId());
-        int gameStatePointer = Integer.parseInt(buttonID.substring(buttonID.length()-1,buttonID.length()));
-        if(playerOneActive) {
-            ((Button)view).setText("X");
-            ((Button)view).setTextColor(Integer.parseInt("#ffc34a"));
-            gameState[gameStatePointer] =0;
-        }
-        else {
-            ((Button)view).setText("O");
-            ((Button)view).setTextColor(Integer.parseInt("70fc3a"));
-            gameState[gameStatePointer] =1;
-        }
-        rounds++;
-        if(checkWinner()){
-            if(playerOneActive){
-                playerOneScoreCount++;
-                updatePlayerScore();
-                playerStatus.setText("Player-1 has won");
-            }
-            else {
-                playerTwoScoreCount++;
-                updatePlayerScore();
-                playerStatus.setText("Player-2 has won");
-            }
-        }
-        else if(rounds==9){
-            playerStatus.setText("No Winner");
-        }
-        else {
-            playerOneActive = !playerOneActive;
-        }
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playagain();
-                playerOneScoreCount=0;
-                playerTwoScoreCount=0;
-            }
-        });{
-            playagain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    playagain();
-                }
-            });
-        }
-    }
-
-    private void playagain() {
-        rounds =0;
-        playerOneActive =true;
-        for(int i=0; i< buttons.length;i++){
-            gameState[i]=2;
-            buttons[i].setText("");
-        }
-        playerStatus.setText("Status");
-    }
-    private void updatePlayerScore() {
-        playerOneScore.setText(Integer.toString(playerOneScoreCount));
-        playerTwoScore.setText(Integer.toString(playerTwoScoreCount));
-    }
-    private boolean checkWinner() {
-        boolean winnerResults = false;
-        for(int[] winningPositions : winningPositions){
-            if (gameState[winningPositions[0]] == gameState[winningPositions[1]] &&
-                    gameState[winningPositions[1]] == gameState[winningPositions[2]] &&
-                    gameState[winningPositions[0]] != 2) {
-                winnerResults = true;
-                break;
-            }
-        }
-        return winnerResults;
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        roundCount = savedInstanceState.getInt("roundCount");
+        player1Points = savedInstanceState.getInt("player1Points");
+        player2Points = savedInstanceState.getInt("player2Points");
+        player1Turn = savedInstanceState.getBoolean("player1Turn");
     }
 }
